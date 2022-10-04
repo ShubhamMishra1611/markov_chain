@@ -1,6 +1,7 @@
 #Simulate a single layer markov chain
 
 import numpy as np
+from scipy.linalg import eig
 
 class Markov_chain:
 
@@ -24,12 +25,18 @@ class Markov_chain:
 
 
     def calculating_stationary_states(self):
-        #k=LA.eig()
-        pass
+        w,v1,v2=eig(self.t_mat,left=True)
+        k=[v1[0][i] for i in range(len(v1))]
+        return k
 
     def simulation(self,initial_state=0,n_steps:int=10):
-        for _ in range(n_steps):
-
-
-
-        
+        prev_state=initial_state
+        for i in range(n_steps):
+            if i%10==0 and i>10:
+                print("")
+            current_state=np.random.choice(list(self.states.keys()),p=self.t_mat[prev_state])
+            print(self.states[current_state],end="---->")
+            prev_state=current_state
+            print(self.states[current_state],end="---->")
+        print("Chain stopped...")
+            
